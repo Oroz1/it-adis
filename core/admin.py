@@ -1,4 +1,5 @@
 from dataclasses import fields
+from email import message
 from re import search
 from django.contrib import admin
 from django.contrib import admin
@@ -18,7 +19,7 @@ class UserAdminConfig(UserAdmin):
     search_fields = ('id', 'username', 'name', 'phone_number', 'email')
     ordering = ('-created_at',)
     list_display = ('id', 'username', 'name', 'phone_number', 'email', 'email_confirmed',)
-    list_display_links = ('id', 'name',)
+    list_display_links = ('id', 'name', 'username',)
     fieldsets = (
         (None, {'fields': ('username', 'name', 'email', 'email_confirmed', 'phone_number', 'status', 'is_superuser', 'password', 'created_at', 'updated_at',)},
          ),
@@ -32,6 +33,12 @@ class UserAdminConfig(UserAdmin):
 
 
 admin.site.register(User, UserAdminConfig)
+
+
+@admin.register(UsersStatus)
+class UsersStarus(admin.ModelAdmin):
+    list_display = ('id', 'title',)
+    list_display_links = ('id', 'title',)
 
 class PagesAdminForm(forms.ModelForm):
     content = forms.CharField(label='Контент', widget=CKEditorUploadingWidget())
@@ -205,4 +212,19 @@ class MediaFilesAdmin(admin.ModelAdmin):
         return f'{obj.file.name}'
 
     file_name.short_description = 'Названия файла'
+
+
+class MailsAdminForm(forms.ModelForm):
+    message = forms.CharField(label='Сообщение', widget=CKEditorUploadingWidget())
+     
+    class Meta:
+        model = Courses
+        fields = '__all__'
+        
+@admin.register(Mails)
+class MailsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'subject')
+    list_display_links = ('id', 'subject')
+    readonly_fields = ('created_at', 'updated_at',)
+    form = MailsAdminForm
 # Register your models here.

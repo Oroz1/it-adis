@@ -172,7 +172,7 @@ class CoursesTimes(TimeStampMixin):
     end_time = models.TimeField(verbose_name='Окончание времени курса')
 
     def __str__(self):
-        return self.course
+        return f'{self.course}'
 
     
 class CoursesRelease(TimeStampMixin):
@@ -189,7 +189,7 @@ class CoursesRelease(TimeStampMixin):
     is_published = models.BooleanField('Опубликовать')
 
     def __str__(self):
-        return self.course
+        return f'{self.course}'
 
 
 class CourseRegistrations(TimeStampMixin):
@@ -245,6 +245,8 @@ class MenusTitles(TimeStampMixin):
         verbose_name_plural = 'Название меню'
 
     title = models.CharField(max_length=255, verbose_name='Название меню')
+    def __str__(self):
+        return f'{self.title}'
 
 
 class MenusElements(TimeStampMixin):
@@ -305,3 +307,16 @@ class MediaFiles(TimeStampMixin):
 
     def __str__(self):
         return self.title
+
+
+class Mails(TimeStampMixin):
+    class Meta:
+        verbose_name = 'Письма'
+        verbose_name_plural = 'Письма'
+
+    subject = models.CharField(max_length=300, verbose_name='Тема')
+    message = models.TextField(verbose_name='Сообщение')
+    send_to = models.ManyToManyField('CourseRegistrations', verbose_name='Получатели')
+
+    def __str__(self) -> str:
+        return f'{self.subject}'

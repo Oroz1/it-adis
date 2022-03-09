@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from pickle import FALSE
 import pytz
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -151,6 +152,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'core.User'
 
+EMAIL_HOST = 'smtp.jino.ru'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'mail@itgit.kg'
+EMAIL_HOST_PASSWORD = 'itgit.kg1212'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False  
+
+
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
 CKEDITOR_CONFIGS = {
@@ -244,16 +253,16 @@ JAZZMIN_SETTINGS = {
     "site_header": "Itadis.kg",
 
     #Название бренда (максимум 19 символов) (по умолчанию — current_admin_site.site_header, если оно отсутствует или отсутствует)
-    "site_brand": "Itadis.kg",
+    "site_brand": " ",
 
     # Логотип для вашего сайта должен присутствовать в статических файлах, используется для бренда в левом верхнем углу.
-    #"site_logo": os.path.join(BASE_DIR, 'static', 'images', 'logo.png'),
+    "site_logo": os.path.join(BASE_DIR, 'static', 'images', 'logo.png'),
 
     # Классы CSS, которые применяются к логотипу выше
-    "site_logo_classes": "img-circle",
+    "site_logo_classes": " ",
 
     # Относительный путь к значку для вашего сайта, по умолчанию будет site_logo, если он отсутствует (в идеале 32x32 px)
-    "site_icon": None,
+    "site_icon": os.path.join(BASE_DIR, 'static', 'images', 'logo32.png'),
 
     # Приветственный текст на экране входа
     "welcome_sign": "Добро пожаловать в администрацию сайта",
@@ -262,7 +271,7 @@ JAZZMIN_SETTINGS = {
     "copyright": "OROZ",
 
     # Администратор модели для поиска из панели поиска, панель поиска опускается, если исключена
-    "search_model": "auth.User",
+    "search_model": "core.User",
 
     # Имя поля в модели пользователя, которое содержит аватар ImageField/URLField/Charfield или вызываемый объект, который получает пользователя
     "user_avatar": None,
@@ -279,9 +288,9 @@ JAZZMIN_SETTINGS = {
 
         # внешний URL, который открывается в новом окне (можно добавить разрешения)
         #{"name": "Jazzmin", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
-        {"name": "Rest API", "url": "#", "new_window": True},
+        {"name": "Rest API", "url": "/api/swagger/", "new_window": False},
         # администратор модели для связи с (разрешения проверены для модели)
-        {"model": "auth.User"},
+        {"model": "core.User"},
 
         #Приложение с выпадающим меню для всех страниц своих моделей (разрешения проверены для моделей)
         #{"app": "books"},
@@ -294,7 +303,7 @@ JAZZMIN_SETTINGS = {
     # Дополнительные ссылки для включения в меню пользователя в правом верхнем углу (URL-адрес типа "приложение" не разрешен)
     "usermenu_links": [
         {"name": "Jazzmin", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
-        {"model": "auth.user"}
+        {"model": "core.User"}
     ],
 
     #############
@@ -314,7 +323,17 @@ JAZZMIN_SETTINGS = {
     "hide_models": [],
 
     # Список приложений (и/или моделей) для базового упорядочения бокового меню (не обязательно содержать все приложения/модели)
-    "order_with_respect_to": ["auth", "core", "core.User", "core.Courses",],
+    "order_with_respect_to": [ 
+        "core.User",
+        "core.UsersStatus",
+        "core.Courses",
+        "core.CoursesRelease",
+        "core.CoursesTimes",
+        "core.CourseRegistrations",
+        "core.Mails",
+        "core.ShiftsDays",
+        "core.Tags",
+        ],
 
     # Пользовательские ссылки для добавления в группы приложений, вводимые по имени приложения
     # "custom_links": {
@@ -334,6 +353,7 @@ JAZZMIN_SETTINGS = {
         "auth.Group": "fas fa-users",
         "core.Pages": "fas fa-code",
         "core.Posts": "fas fa-bullhorn",
+        "core.UsersStatus": "fas fa-id-card",
         "core.Tags": "fas fa-tag",
         "core.Courses": "fas fa-book",
         "core.ShiftsDays": "fas fa-calendar-times",
@@ -347,6 +367,7 @@ JAZZMIN_SETTINGS = {
         "core.FootersBars": "fas fa-hashtag",
         "core.FilesTypes": "fas fa-cogs",
         "core.MediaFiles": "fas fa-file",
+        "core.Mails": "fas fa-envelope",
     },
     "custom_css": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css",
     # Значки, которые используются, если они не указаны вручную
