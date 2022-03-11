@@ -21,6 +21,7 @@ from core.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', redirect_to)
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include('core.api.urls'))    
