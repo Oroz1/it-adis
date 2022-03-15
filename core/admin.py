@@ -14,22 +14,38 @@ from .models import *
 admin.site.site_header = 'It Adis'
 
 
+class UserAdminForm(forms.ModelForm):
+    information = forms.CharField(label='Доп. информация', widget=CKEditorUploadingWidget())
+    
+    class Meta:
+        model = Pages
+        fields = '__all__'
+
+
 class UserAdminConfig(UserAdmin):
     model = User
     search_fields = ('id', 'username', 'name', 'phone_number', 'email')
     ordering = ('-created_at',)
-    list_display = ('id', 'username', 'name', 'phone_number', 'email', 'email_confirmed',)
+    list_display = ('id', 'username', 'name', 'get_professions', 'phone_number', 'email', 'is_active',)
     list_display_links = ('id', 'name', 'username',)
     fieldsets = (
-        (None, {'fields': ('username', 'name', 'email', 'email_confirmed', 'phone_number', 'status', 'is_superuser', 'password', 'created_at', 'updated_at',)},
+        (None, {'fields': ('username', 'name', 'email', 'information', 'profession', 'phone_number', 'is_active', 'status', 'is_superuser', 'password', 'created_at', 'updated_at',)},
          ),
     )
     add_fieldsets = (
         (None, {
-            'fields': ('username', 'name', 'email', 'phone_number', 'status', 'email_confirmed', 'password1', 'password2', 'is_superuser',)}
+            'fields': ('username', 'name', 'email', 'phone_number', 'status', 'information', 'profession', 'password1', 'password2', 'is_superuser',)}
          ),
     )
     readonly_fields = ('created_at', 'updated_at')
+
+    def get_professions(self, obj):
+        temp = ''
+        for profession in obj.profession.all():
+            temp += f'{profession.title}, '
+        return temp
+
+    get_professions.short_description = 'Профессии'
 
 
 admin.site.register(User, UserAdminConfig)
@@ -49,8 +65,8 @@ class PagesAdminForm(forms.ModelForm):
 
 @admin.register(Pages)
 class PagesAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'slug', 'user_id', 'published',) 
-    list_filter = ['user_id', 'published']
+    list_display = ('id', 'title', 'slug', 'user_id', 'is_published',) 
+    list_filter = ['user_id', 'is_published']
     list_display_links = ('id', 'title',)
     search_fields = ('title', 'user_id',)
     readonly_fields = ('created_at', 'updated_at')
@@ -67,8 +83,8 @@ class PostsAdminForm(forms.ModelForm):
 
 @admin.register(Posts)
 class PostsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'user_id', 'published',)
-    list_filter = ['user_id', 'published']
+    list_display = ('id', 'title', 'user_id', 'is_published',)
+    list_filter = ['user_id', 'is_published']
     list_display_links = ('id', 'title',)
     readonly_fields = ('created_at', 'updated_at')
     search_fields = ('title', 'user_id',)
@@ -97,7 +113,7 @@ class CoursesAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'title',)
     list_filter = ['tags',]
     search_fields = ['title']
-    fields = ('title', 'image', 'short_content', 'content', 'note','tags', 'get_full_image')
+    fields = ('title', 'image', 'short_content', 'css_file', 'content', 'note','tags', 'get_full_image')
     form = CoursesAdminForm
     def get_full_image(self, obj):
         return mark_safe(f'<img src="{obj.image.url}" alt="" width="50%">')
@@ -173,17 +189,35 @@ class UrlsAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at',)
 
 
+@admin.register(TypeOfCourses)
+class TypeOfCoursesAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title')
+    list_display_links = ('id', 'title',)
+    search_fields = ('id', 'title')
+    readonly_fields = ('created_at', 'updated_at',)
+
+
+@admin.register(Professions)
+class ProfessionsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title')
+    list_display_links = ('id', 'title',)
+    search_fields = ('id', 'title')
+    readonly_fields = ('created_at', 'updated_at',)
+
+
 @admin.register(MenusTitles)
 class MenuesTitelsAdmin(admin.ModelAdmin):
     list_display = ('id', 'title',)
     list_display_links = ('id', 'title',)
+    search_fields = ('id', 'title',)
     search_fields = ('id', 'title')
 
 
 @admin.register(MenusElements)
 class MenusElementsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'menu', 'title', 'icon', 'class_list', 'url', 'is_active')
-    list_display_links = ('id', 'menu', 'title')
+    list_display = ('id', 'menu', 'title', 'icon', 'class_list', 'url', 'is_published',)
+    list_display_links = ('id', 'menu', 'title',)
+    search_fields = ('id', 'title',)
     list_filter = ('menu', 'url',)
     readonly_fields = ('created_at', 'updated_at',)
 
@@ -191,21 +225,23 @@ class MenusElementsAdmin(admin.ModelAdmin):
 @admin.register(FootersBars)
 class FootersBarsAdmin(admin.ModelAdmin):
     list_display = ('id','title',)
-    list_display_links = ('id', 'title')
+    list_display_links = ('id', 'title',)
+    search_fields = ('id', 'title',)
     readonly_fields = ('created_at', 'updated_at',)
 
 
 @admin.register(FilesTypes)
 class FilesTypesAdmin(admin.ModelAdmin):
     list_display = ('id', 'title',)
-    list_display_links = ('id', 'title')
+    list_display_links = ('id', 'title',)
     readonly_fields = ('created_at', 'updated_at',)
 
 
 @admin.register(MediaFiles)
 class MediaFilesAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'type', 'file_name',)
-    list_display_links = ('id', 'title')
+    list_display_links = ('id', 'title',)
+    search_fields = ('id', 'title',)
     readonly_fields = ('created_at', 'updated_at',)
 
     def file_name(self, obj):
@@ -223,8 +259,17 @@ class MailsAdminForm(forms.ModelForm):
         
 @admin.register(Mails)
 class MailsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'subject')
-    list_display_links = ('id', 'subject')
+    list_display = ('id', 'subject',)
+    list_display_links = ('id', 'subject',)
+    search_fields = ('id', 'subject',)
     readonly_fields = ('created_at', 'updated_at',)
     form = MailsAdminForm
+
+
+@admin.register(Comments)
+class CommentsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user',)
+    list_display_links = ('id', 'user',)
+    search_fields = ('id', 'user',)
+    readonly_fields = ('created_at', 'updated_at',)
 # Register your models here.

@@ -156,4 +156,11 @@ class MediaFilesSerializer(serializers.ModelSerializer):
         model = MediaFiles
         fields = '__all__'
 
+
+class CommentsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comments
+        fields = '__all__'
+
     

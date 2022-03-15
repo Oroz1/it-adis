@@ -86,7 +86,7 @@ class UserDetailApiView(ListAPIView):
 
 
 class PagesApiView(ListAPIView):
-    queryset = Pages.objects.filter(published=True)
+    queryset = Pages.objects.filter(is_published=True)
     serializer_class = PagesSerializer
     permission_classes = (AllowAny,)
 
@@ -105,7 +105,7 @@ class PagesDetailApiView(ListAPIView):
 
 
 class PostsApiView(ListAPIView):
-    queryset = Posts.objects.filter(published=True)
+    queryset = Posts.objects.filter(is_published=True)
     serializer_class = PostsSerializer
     permission_classes = (AllowAny,)
 
@@ -263,7 +263,7 @@ class MenusTitlesDetailApiView(ListAPIView):
 
 
 class MenusElementsApiView(ListAPIView):
-    queryset = MenusElements.objects.all()
+    queryset = MenusElements.objects.filter(is_published=True)
     serializer_class = MenusElementsSerializer
     permission_classes = (AllowAny,)
 
@@ -336,6 +336,28 @@ class MediaFilesDetailApiView(ListAPIView):
             return Response(serializer.data)
         except Exception:
             return Response({'detail': 'Данного файла не существует'}, status=Status.HTTP_404_NOT_FOUND)
+
+
+class CommentsApiView(ListAPIView):
+    queryset = Comments.objects.all()
+    serializer_class = CommentsSerializer
+    permission_classes = (AllowAny,)
+
+
+class CommentsDetailApiView(ListAPIView):
+    serializer_class = CommentsSerializer
+    permission_classes = (AllowAny,)
+
+    def list(self, request, pk):
+        try:
+            queryset = Comments.objects.get(id=pk)
+            serializer = self.serializer_class(queryset, many=False)
+            return Response(serializer.data)
+        except Exception:
+            return Response({'detail': 'Данного файла не существует'}, status=Status.HTTP_404_NOT_FOUND)
+
+
+
 
 
 

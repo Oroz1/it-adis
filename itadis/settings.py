@@ -152,6 +152,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'core.User'
 
+
 EMAIL_HOST = 'smtp.jino.ru'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'mail@itgit.kg'
@@ -333,6 +334,7 @@ JAZZMIN_SETTINGS = {
         "core.Mails",
         "core.ShiftsDays",
         "core.Tags",
+        "core.Comments",
         ],
 
     # Пользовательские ссылки для добавления в группы приложений, вводимые по имени приложения
@@ -362,12 +364,15 @@ JAZZMIN_SETTINGS = {
         "core.CourseRegistrations": "fas fa-address-book",
         "core.HeadersBars": "fas fa-code",
         "core.Urls": "fas fa-link",
-        "core.MenusTitles": "fas fa-comment",
+        "core.MenusTitles": "fas fa-exclamation",
         "core.MenusElements": "fas fa-bars",
         "core.FootersBars": "fas fa-hashtag",
         "core.FilesTypes": "fas fa-cogs",
         "core.MediaFiles": "fas fa-file",
         "core.Mails": "fas fa-envelope",
+        "core.Comments": "fas fa-comment",
+        "core.Professions": "fas fa-id-badge",
+        "core.TypeOfCourses": "fas fa-puzzle-piece",
     },
     "custom_css": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css",
     # Значки, которые используются, если они не указаны вручную

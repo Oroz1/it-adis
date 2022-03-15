@@ -58,4 +58,7 @@ urlpatterns = [
     
     path('media_files/', MediaFilesApiView.as_view()),
     path('media_files/<int:pk>/', MediaFilesDetailApiView.as_view()),
+
+    path('comments/', CommentsApiView.as_view()),
+    path('comments/<int:pk>/', CommentsDetailApiView.as_view()),
 ]

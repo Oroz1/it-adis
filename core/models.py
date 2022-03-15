@@ -1,4 +1,4 @@
-from calendar import c
+from operator import length_hint
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
@@ -54,6 +54,18 @@ class UsersStatus(TimeStampMixin):
         return self.title
 
 
+class Professions(TimeStampMixin):
+
+    class Meta:
+        verbose_name = 'профессия'
+        verbose_name_plural = 'профессии'
+
+    title = models.CharField(max_length=100, verbose_name='название профессии')
+
+    def __str__(self):
+        return f'{self.title}'
+
+
 # Таблица пользователя 
 class User(AbstractBaseUser, PermissionsMixin, TimeStampMixin):
     class Meta:
@@ -66,10 +78,10 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampMixin):
     email = models.EmailField(verbose_name='Элетронная почта')
     status = models.ManyToManyField('UsersStatus', verbose_name='Статус(ы) пользователя')
     phone_number = models.CharField(max_length=15, verbose_name='Номер телефона', null=True)
-
-    email_confirmed = models.BooleanField(default=False, verbose_name='Подтверждение по почте')
+    information = models.TextField(verbose_name='Информация о пользователе')
+    profession = models.ManyToManyField('Professions', verbose_name='Профессии')
     is_staff = models.BooleanField(default=True, verbose_name='Подтверждение')
-    is_active = models.BooleanField(default=True,)
+    is_active = models.BooleanField(default=True, verbose_name='Подтверждение по почте')
     is_superuser = models.BooleanField(default=False, verbose_name='Статус администратора')
     objects = CustomAccountManager()
 
@@ -91,7 +103,7 @@ class Pages(TimeStampMixin):
     title = models.CharField(max_length=255, verbose_name='Заголовок страницы')
     content = models.TextField(verbose_name='Контент страницы')
     user_id = models.ForeignKey('User', on_delete=models.CASCADE, null=True, verbose_name='Пользователь')
-    published = models.BooleanField(verbose_name='Статус видимости', default=False)
+    is_published = models.BooleanField(verbose_name='Опубликовать', default=False)
 
     def __str__(self):
         return self.title
@@ -108,7 +120,7 @@ class Posts(TimeStampMixin):
     short_content = models.TextField(verbose_name='Краткое описание поста')
     content = models.TextField(verbose_name='Контент поста')
     user_id = models.ForeignKey('User', on_delete=models.CASCADE, null=True, verbose_name='Пользователь')
-    published = models.BooleanField(verbose_name='Статус видимости', default=False)
+    is_published = models.BooleanField(verbose_name='Опубликовать', default=False)
 
     def __str__(self):
         return self.title
@@ -134,10 +146,12 @@ class Courses(TimeStampMixin):
         verbose_name_plural = 'Курсы'
         ordering = ['-updated_at']
 
+    slug = models.SlugField(verbose_name='Slug название')
     title = models.CharField(max_length=255, verbose_name='Название курса')
     image = models.ImageField(upload_to='courses/', verbose_name='Заголовочная кортина')
     short_content = models.TextField(verbose_name='Краткое описание')
     content = models.TextField(verbose_name='Контент')
+    css_file = models.FileField(upload_to='css_files/', verbose_name='CSS файл')
     tags = models.ManyToManyField('Tags', verbose_name='Теги')
 
 
@@ -162,10 +176,11 @@ class ShiftsDays(TimeStampMixin):
 class CoursesTimes(TimeStampMixin):
 
     class Meta:
-        verbose_name = 'Время курса'
-        verbose_name_plural = 'Время курсов'
+        verbose_name = 'Расписание курса'
+        verbose_name_plural = 'Расписание курсов'
         ordering = ['-updated_at']
-        
+
+    slug = models.SlugField(verbose_name='Slug название')    
     course = models.ForeignKey('Courses', on_delete=models.CASCADE, null=True, verbose_name='Курс')
     shift_time = models.ForeignKey('ShiftsDays', on_delete=models.PROTECT, null=True, verbose_name='График смены')
     start_time = models.TimeField(verbose_name='Начало веремени курса')
@@ -175,6 +190,18 @@ class CoursesTimes(TimeStampMixin):
         return f'{self.course}'
 
     
+class TypeOfCourses(TimeStampMixin):
+
+    class Meta:
+        verbose_name = 'Формат обучение'
+        verbose_name_plural = 'Форматы обучении'
+
+    title = models.CharField(max_length=50, verbose_name='Название формата')
+
+    def __str__(self):
+        return f'{self.title}'
+
+
 class CoursesRelease(TimeStampMixin):
 
     class Meta:
@@ -182,9 +209,13 @@ class CoursesRelease(TimeStampMixin):
         verbose_name_plural = 'Релизы курсов'
         ordering = ['-updated_at']
 
+    slug = models.SlugField(verbose_name='Slug название') 
     course = models.ForeignKey('Courses', on_delete=models.CASCADE, verbose_name='Курс')
     group = models.CharField(max_length=300, verbose_name='Называния группы')
     release_date = models.DateTimeField(verbose_name='Дата началы курса')
+    length_of_education = models.CharField(max_length=50, verbose_name='Длительность обучение')
+    level = models.CharField(max_length=50, verbose_name='Уровень курса')
+    type_of_courses = models.ForeignKey('TypeOfCourses', on_delete=models.PROTECT, verbose_name='Формат обучение')
     is_active = models.BooleanField(verbose_name='Начался ли курс')
     is_published = models.BooleanField('Опубликовать')
 
@@ -261,7 +292,7 @@ class MenusElements(TimeStampMixin):
     icon = models.CharField(max_length=255, verbose_name='Font-awesome иконка')
     class_list =  models.TextField(verbose_name='CSS Классы')
     url = models.ForeignKey('Urls', on_delete=models.PROTECT, null=True, verbose_name='Ссылка')
-    is_active = models.BooleanField(verbose_name='Видемость')
+    is_published = models.BooleanField(verbose_name='Опубликовать')
 
     def __str__(self) -> str:
         return self.title
@@ -313,10 +344,26 @@ class Mails(TimeStampMixin):
     class Meta:
         verbose_name = 'Письма'
         verbose_name_plural = 'Письма'
+        ordering = ['-updated_at']
 
     subject = models.CharField(max_length=300, verbose_name='Тема')
     message = models.TextField(verbose_name='Сообщение')
     send_to = models.ManyToManyField('CourseRegistrations', verbose_name='Получатели')
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f'{self.subject}'
+
+
+class Comments(TimeStampMixin):
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+        ordering = ['-updated_at']
+
+    comment = models.TextField(verbose_name='Комментарий')
+    is_published = models.BooleanField(verbose_name='Опубликовать')
+    user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name='Пользователь')
+
+    def __str__(self):
+        return f'{self.user.name}'
