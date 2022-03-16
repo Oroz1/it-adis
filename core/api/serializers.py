@@ -174,9 +174,12 @@ class MediaFilesSerializer(serializers.ModelSerializer):
 
 class CommentsSerializer(serializers.ModelSerializer):
 
+    name = serializers.ReadOnlyField(source="get_user_name")
+    professions = serializers.ReadOnlyField(source="get_user_professions")
+
     class Meta:
         model = Comments
-        fields = '__all__'
+        fields = ('name', 'professions', 'comment')
 
 
 class GroupSerializer(serializers.ModelSerializer):

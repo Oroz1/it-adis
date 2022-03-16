@@ -383,5 +383,18 @@ class Comments(TimeStampMixin):
     is_published = models.BooleanField(verbose_name='Опубликовать')
     user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name='Пользователь')
 
+    @property
+    def get_user_name(self):
+        if self.user is not None:
+            print(self.user)
+            return self.user.name
+        return self.user.name
+    
+    @property
+    def get_user_professions(self):
+        if self.user is not None:
+            return self.user.profession.all().values()
+        return self.user
+
     def __str__(self):
         return f'{self.user}'
