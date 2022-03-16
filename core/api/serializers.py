@@ -1,5 +1,7 @@
 from dataclasses import fields
+from distutils import core
 from pyexpat import model
+from unicodedata import name
 from rest_framework import serializers
 from core.models import *
 
@@ -23,9 +25,20 @@ class UsersStatusSerializer(serializers.ModelSerializer):
 
 class CoursesReleaseSerializer(serializers.ModelSerializer):
     
+    group = serializers.SlugRelatedField(slug_field='title', read_only=True, many=False)
     class Meta:
         model = CoursesRelease
-        fields = '__all__'
+        fields = (
+            'slug',
+            'group',
+            'release_date',
+            'length_of_education',
+            'level',
+            'type_of_courses',
+            'is_active',
+            'is_published',
+            'course',
+         )
 
 
 

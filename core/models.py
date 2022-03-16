@@ -236,6 +236,7 @@ class CoursesRelease(TimeStampMixin):
     type_of_courses = models.ForeignKey('TypeOfCourses', on_delete=models.PROTECT, verbose_name='Формат обучение')
     is_active = models.BooleanField(verbose_name='Начался ли курс')
     is_published = models.BooleanField('Опубликовать')
+    
 
     def __str__(self):
         return f'{self.course}'
