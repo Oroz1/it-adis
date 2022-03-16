@@ -1,4 +1,5 @@
 from operator import length_hint
+from tokenize import group
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
@@ -59,6 +60,7 @@ class Professions(TimeStampMixin):
     class Meta:
         verbose_name = 'профессия'
         verbose_name_plural = 'профессии'
+        ordering = ['-updated_at']
 
     title = models.CharField(max_length=100, verbose_name='название профессии')
 
@@ -138,6 +140,21 @@ class Tags(TimeStampMixin):
     def __str__(self):
         return self.title
 
+class Group(TimeStampMixin):
+
+    class Meta:
+        verbose_name = 'группа'
+        verbose_name_plural = 'группы'
+        ordering = ['-updated_at']
+
+    title = models.CharField(max_length=50, verbose_name='Название группы')
+    description = models.TextField(verbose_name='описание')
+    students = models.ManyToManyField('User', verbose_name='Студенты', related_name="users")
+    teacher = models.ForeignKey('User', on_delete=models.PROTECT, verbose_name='Ментор', related_name='user')
+
+    def __str__(self):
+        return f'{self.title}'
+
 
 class Courses(TimeStampMixin):
 
@@ -182,6 +199,7 @@ class CoursesTimes(TimeStampMixin):
 
     slug = models.SlugField(verbose_name='Slug название')    
     course = models.ForeignKey('Courses', on_delete=models.CASCADE, null=True, verbose_name='Курс')
+    group = models.ForeignKey('Group', on_delete=models.PROTECT, verbose_name='Группа')
     shift_time = models.ForeignKey('ShiftsDays', on_delete=models.PROTECT, null=True, verbose_name='График смены')
     start_time = models.TimeField(verbose_name='Начало веремени курса')
     end_time = models.TimeField(verbose_name='Окончание времени курса')
@@ -211,7 +229,7 @@ class CoursesRelease(TimeStampMixin):
 
     slug = models.SlugField(verbose_name='Slug название') 
     course = models.ForeignKey('Courses', on_delete=models.CASCADE, verbose_name='Курс')
-    group = models.CharField(max_length=300, verbose_name='Называния группы')
+    group = models.ForeignKey('Group', on_delete=models.PROTECT, verbose_name='Называния группы')
     release_date = models.DateTimeField(verbose_name='Дата началы курса')
     length_of_education = models.CharField(max_length=50, verbose_name='Длительность обучение')
     level = models.CharField(max_length=50, verbose_name='Уровень курса')
@@ -366,4 +384,4 @@ class Comments(TimeStampMixin):
     user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name='Пользователь')
 
     def __str__(self):
-        return f'{self.user.name}'
+        return f'{self.user}'

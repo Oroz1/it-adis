@@ -269,7 +269,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
 }
 
 JAZZMIN_SETTINGS = {
@@ -378,7 +378,7 @@ JAZZMIN_SETTINGS = {
     "icons": {
         "auth": "fas fa-users-cog",
         "core.User": "fas fa-user",
-        "auth.Group": "fas fa-users",
+        "auth.Group": "fas fa-circle",
         "core.Pages": "fas fa-code",
         "core.Posts": "fas fa-bullhorn",
         "core.UsersStatus": "fas fa-id-card",
@@ -399,6 +399,7 @@ JAZZMIN_SETTINGS = {
         "core.Comments": "fas fa-comment",
         "core.Professions": "fas fa-id-badge",
         "core.TypeOfCourses": "fas fa-puzzle-piece",
+        "core.Group": "fas fa-users",
     },
     "custom_css": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css",
     # Значки, которые используются, если они не указаны вручную

@@ -144,8 +144,9 @@ class ShiftsDaysAdmin(admin.ModelAdmin):
 
 @admin.register(CoursesTimes)
 class CoursesTimesAdmin(admin.ModelAdmin):
-    list_display = ('id', 'course', 'shift_time', 'start_time', 'end_time',)
+    list_display = ('id', 'course', 'group', 'shift_time', 'start_time', 'end_time',)
     list_display_links = ('id', 'course',)
+    list_filter = ('id', 'course', 'group', 'shift_time',)
     search_fields = ['course', 'id',]
     readonly_fields = ('created_at', 'updated_at')
 
@@ -271,5 +272,14 @@ class CommentsAdmin(admin.ModelAdmin):
     list_display = ('id', 'user',)
     list_display_links = ('id', 'user',)
     search_fields = ('id', 'user',)
+    readonly_fields = ('created_at', 'updated_at',)
+
+
+@admin.register(Group)
+class GroupAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'teacher')
+    list_display_links = ('id', 'title',)
+    search_fields = ('id', 'title',)
+    list_filter = ('teacher',)
     readonly_fields = ('created_at', 'updated_at',)
 # Register your models here.

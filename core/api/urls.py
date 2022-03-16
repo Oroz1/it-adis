@@ -61,4 +61,7 @@ urlpatterns = [
 
     path('comments/', CommentsApiView.as_view()),
     path('comments/<int:pk>/', CommentsDetailApiView.as_view()),
+
+    path('groups/', GroupApiView.as_view()),
+    path('groups/<int:pk>/', GroupDetailApiView.as_view()),
 ]

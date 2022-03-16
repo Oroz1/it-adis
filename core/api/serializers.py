@@ -35,9 +35,24 @@ class UserSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='title'
     )
+    profession = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='title'
+    )
     class Meta:
         model = User
-        fields = '__all__'
+        fields = (
+            'id',
+            'username',
+            'name',
+            'email',
+            'status',
+            'phone_number',
+            'information',
+            'profession',
+            'is_active',
+        )
 
 
 class PagesSerializer(serializers.ModelSerializer):
@@ -161,6 +176,13 @@ class CommentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comments
+        fields = '__all__'
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Group
         fields = '__all__'
 
     

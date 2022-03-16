@@ -1,0 +1,41 @@
+body{
+  font-family: Tahoma;
+  background: #EEEEEE
+}
+*{
+  box-sizing: border-box;
+}
+.wrapper{
+  width: 900px;
+  margin: auto;
+  background: #fff;
+}
+.container{
+  display: flex;
+}
+.box{
+  width: 25%;
+  padding: 10px;
+}
+.bor{
+  border-bottom: 4px solid #eee;
+  border-right: 4px solid #eee;
+}
+.bor2{
+  border-bottom: 4px solid #eee;
+}
+.text{
+  text-align: center;
+}
+.box2{
+  width: 20%;
+  padding: 10px;
+}
+img{
+  width: 100%;
+  vertical-align: bottom;
+}
+h2{
+  font-weight: 500;
+  margin-left: 20px;
+}

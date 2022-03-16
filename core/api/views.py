@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView, ListCreateAPIView, GenericAPIView, RetrieveDestroyAPIView, CreateAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from django.core.exceptions import ObjectDoesNotExist
@@ -14,17 +14,10 @@ class UsersStatusApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class UsersStatusDetailApiView(ListAPIView):
+class UsersStatusDetailApiView(RetrieveAPIView):
+    queryset = UsersStatus.objects.all()
     serializer_class = UsersStatusSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = UsersStatus.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данного статуса не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class CoursesReleaseApiView(ListAPIView):
@@ -33,17 +26,10 @@ class CoursesReleaseApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class CoursesReleaseDetailApiView(ListAPIView):
+class CoursesReleaseDetailApiView(RetrieveAPIView):
+    queryset = CoursesRelease.objects.filter(is_published=True)
     serializer_class = CoursesReleaseSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = CoursesRelease.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данного релиза не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 
@@ -53,17 +39,10 @@ class CoursesApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class CoursesDetailApiView(ListAPIView):
+class CoursesDetailApiView(RetrieveAPIView):
+    queryset = Courses.objects.all()
     serializer_class = CoursesSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = Courses.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данного курса не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class UserApiView(ListAPIView):
@@ -72,17 +51,10 @@ class UserApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class UserDetailApiView(ListAPIView):
+class UserDetailApiView(RetrieveAPIView): 
+    queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = User.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данного пользователя не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class PagesApiView(ListAPIView):
@@ -91,17 +63,10 @@ class PagesApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class PagesDetailApiView(ListAPIView):
+class PagesDetailApiView(RetrieveAPIView):
+    queryset = Pages.objects.filter(is_published=True)
     serializer_class = PagesSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = Pages.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данной страницы не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class PostsApiView(ListAPIView):
@@ -110,17 +75,10 @@ class PostsApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class PostsDetailApiView(ListAPIView):
+class PostsDetailApiView(RetrieveAPIView):
+    queryset = Posts.objects.filter(is_published=True)
     serializer_class = PostsSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = Posts.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данног поста не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class TagsApiView(ListAPIView):
@@ -129,17 +87,10 @@ class TagsApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class TagsDetailApiView(ListAPIView):
+class TagsDetailApiView(RetrieveAPIView):
+    queryset = Tags.objects.all()
     serializer_class = TagsSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = Tags.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данного тега не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class ShiftsDaysApiView(ListAPIView):
@@ -148,17 +99,10 @@ class ShiftsDaysApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class ShiftsDaysDetailApiView(ListAPIView):
+class ShiftsDaysDetailApiView(RetrieveAPIView):
+    queryset = ShiftsDays.objects.all()
     serializer_class = ShiftsDaysSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = ShiftsDays.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данного смены дня не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class CoursesTimesApiView(ListAPIView):
@@ -167,17 +111,10 @@ class CoursesTimesApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class CoursesTimesDetailApiView(ListAPIView):
+class CoursesTimesDetailApiView(RetrieveAPIView):
+    queryset = CoursesTimes.objects.all()
     serializer_class = CoursesTimesSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = CoursesTimes.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данноого регламента не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class CourseRegistrationsApiView(ListAPIView):
@@ -192,17 +129,10 @@ class CourseRegistrationsCreateApiView(CreateAPIView):
 
 
 
-class CourseRegistrationsDetailApiView(ListAPIView):
+class CourseRegistrationsDetailApiView(RetrieveAPIView):
+    queryset = CourseRegistrations.objects.all()
     serializer_class = CourseRegistrationsSerailizer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = CourseRegistrations.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данноой регистраций не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class HeadersBarsApiView(ListAPIView):
@@ -211,18 +141,10 @@ class HeadersBarsApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class HeadersBarsDetailApiView(ListAPIView):
+class HeadersBarsDetailApiView(RetrieveAPIView):
+    queryset = HeadersBars.objects.all()
     serializer_class = HeadersBarsSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = HeadersBars.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данного заголовка для страницы не существует'}, status=Status.HTTP_404_NOT_FOUND)
-
 
 class UrlsApiView(ListAPIView):
     queryset = Urls.objects.all()
@@ -230,17 +152,10 @@ class UrlsApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class UrlsDetailApiView(ListAPIView):
+class UrlsDetailApiView(RetrieveAPIView):
+    queryset = Urls.objects.all()
     serializer_class = UrlsSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = Urls.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данного ссылки не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class MenusTitlesApiView(ListAPIView):
@@ -249,17 +164,10 @@ class MenusTitlesApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class MenusTitlesDetailApiView(ListAPIView):
+class MenusTitlesDetailApiView(RetrieveAPIView):
+    queryset = MenusTitles.objects.all()
     serializer_class = MenusTitlesSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = MenusTitles.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данного название меню не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class MenusElementsApiView(ListAPIView):
@@ -268,17 +176,10 @@ class MenusElementsApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class MenusElementsDetailApiView(ListAPIView):
+class MenusElementsDetailApiView(RetrieveAPIView):
+    queryset = MenusElements.objects.filter(is_published=True)
     serializer_class = MenusElementsSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = MenusElements.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данного меню элемента не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class FootersBarsApiView(ListAPIView):
@@ -287,17 +188,10 @@ class FootersBarsApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class FootersBarsDetailApiView(ListAPIView):
+class FootersBarsDetailApiView(RetrieveAPIView):
+    queryset = FootersBars.objects.all()
     serializer_class = FootersBarsSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = FootersBars.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данной страныцы для подвала сайта не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class FilesTypesApiView(ListAPIView):
@@ -306,17 +200,10 @@ class FilesTypesApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class FilesTypesDetailApiView(ListAPIView):
+class FilesTypesDetailApiView(RetrieveAPIView):
+    queryset = FilesTypes.objects.all()
     serializer_class = FilesTypesSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = FilesTypes.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данного формата файла не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class MediaFilesApiView(ListAPIView):
@@ -325,17 +212,10 @@ class MediaFilesApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class MediaFilesDetailApiView(ListAPIView):
+class MediaFilesDetailApiView(RetrieveAPIView):
+    queryset = MediaFiles.objects.all()
     serializer_class = MediaFilesSerializer
     permission_classes = (AllowAny,)
-
-    def list(self, request, pk):
-        try:
-            queryset = MediaFiles.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данного файла не существует'}, status=Status.HTTP_404_NOT_FOUND)
 
 
 class CommentsApiView(ListAPIView):
@@ -344,19 +224,22 @@ class CommentsApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class CommentsDetailApiView(ListAPIView):
+class CommentsDetailApiView(RetrieveAPIView):
+    queryset = Comments.objects.all()
     serializer_class = CommentsSerializer
     permission_classes = (AllowAny,)
 
-    def list(self, request, pk):
-        try:
-            queryset = Comments.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=False)
-            return Response(serializer.data)
-        except Exception:
-            return Response({'detail': 'Данного файла не существует'}, status=Status.HTTP_404_NOT_FOUND)
+
+class GroupApiView(ListAPIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = (AllowAny,)
 
 
+class GroupDetailApiView(RetrieveAPIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = (AllowAny,)
 
 
 
