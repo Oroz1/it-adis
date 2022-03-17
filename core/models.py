@@ -1,5 +1,3 @@
-from operator import length_hint
-from tokenize import group
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
@@ -231,6 +229,7 @@ class CoursesRelease(TimeStampMixin):
 
     slug = models.SlugField(verbose_name='Slug название') 
     course = models.ForeignKey('Courses', on_delete=models.CASCADE, verbose_name='Курс')
+    image = models.ImageField(upload_to='courses_release/', null=True, verbose_name='Заголовочная кортина')
     group = models.ForeignKey('Group', on_delete=models.PROTECT, verbose_name='Называния группы')
     description = models.TextField(verbose_name='Описание', null=True)
     release_date = models.DateTimeField(verbose_name='Дата началы курса')

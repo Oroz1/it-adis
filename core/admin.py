@@ -162,11 +162,31 @@ class CourseRegistrationsAdmin(admin.ModelAdmin):
 
 @admin.register(CoursesRelease)
 class CoursesReleasesAdmin(admin.ModelAdmin):
-    list_display = ('id', 'course', 'group','release_date', 'is_active','is_published',)
+    list_display = ('id', 'course', 'group','release_date', 'is_active','is_published', 'get_image')
     list_display_links = ('id', 'course',)
     search_fields = ['course', 'id']
     list_filter = ['is_active', 'is_published']
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at', 'get_image')
+    fields = (
+        'slug',
+        'group',
+        'release_date',
+        'course',
+        'image',
+        'get_image',
+        'description',
+        'length_of_education',
+        'level',
+        'type_of_courses',
+        'is_active',
+        'is_published', 
+        'created_at', 
+        'updated_at',
+    )
+    def get_image(self, obj):
+        return mark_safe(f'<img src="{obj.image.url}" width="100rem" alt="">')
+
+    get_image.short_description = 'Картина'
 
 
 @admin.register(HeadersBars)

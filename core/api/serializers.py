@@ -31,6 +31,7 @@ class CoursesReleaseSerializer(serializers.ModelSerializer):
         fields = (
             'slug',
             'group',
+            'image',
             'release_date',
             'length_of_education',
             'level',
