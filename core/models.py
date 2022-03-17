@@ -232,6 +232,7 @@ class CoursesRelease(TimeStampMixin):
     slug = models.SlugField(verbose_name='Slug название') 
     course = models.ForeignKey('Courses', on_delete=models.CASCADE, verbose_name='Курс')
     group = models.ForeignKey('Group', on_delete=models.PROTECT, verbose_name='Называния группы')
+    description = models.TextField(verbose_name='Описание', null=True)
     release_date = models.DateTimeField(verbose_name='Дата началы курса')
     length_of_education = models.CharField(max_length=50, verbose_name='Длительность обучение')
     level = models.CharField(max_length=50, verbose_name='Уровень курса')
