@@ -282,4 +282,21 @@ class GroupAdmin(admin.ModelAdmin):
     search_fields = ('id', 'title',)
     list_filter = ('teacher',)
     readonly_fields = ('created_at', 'updated_at',)
+
+
+class QuestionsAdminForm(forms.ModelForm):
+    answer = forms.CharField(label='Ответ (Контетн)', widget=CKEditorUploadingWidget())
+     
+    class Meta:
+        model = Questions
+        fields = '__all__'
+
+
+@admin.register(Questions)
+class QuestionsAdmin(admin.ModelAdmin):
+    form = QuestionsAdminForm
+    list_display = ('id', 'question',)
+    list_display_links = ('id', 'question',)
+    search_fields = ('id', 'question',)
+    readonly_fields = ('created_at', 'updated_at',)
 # Register your models here.

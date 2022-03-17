@@ -20,7 +20,8 @@ urlpatterns = [
     path('user/<int:pk>/', UserDetailApiView.as_view()),
     
     path('pages/', PagesApiView.as_view()),
-    path('pages/<int:pk>/', PagesDetailApiView.as_view()),
+    path('pages/<int:pk>/', PagesDetailPkApiView.as_view()),
+    path('pages/<str:slug>/', PagesDetailSlugApiView.as_view()),
     
     path('posts/', PostsApiView.as_view()),
     path('posts/<int:pk>/', PostsDetailApiView.as_view()),
@@ -64,4 +65,7 @@ urlpatterns = [
 
     path('groups/', GroupApiView.as_view()),
     path('groups/<int:pk>/', GroupDetailApiView.as_view()),
+
+    path('questions/', QuestionsApiView.as_view()),
+    path('questions/<int:pk>/', QuestionsDetailApiView.as_view()),
 ]

@@ -104,6 +104,7 @@ class Pages(TimeStampMixin):
     slug = models.SlugField(verbose_name='Slug название')
     title = models.CharField(max_length=255, verbose_name='Заголовок страницы')
     content = models.TextField(verbose_name='Контент страницы')
+    css_file = models.FileField(upload_to='css_files/', null=True, blank=True, verbose_name='CSS файл')
     user_id = models.ForeignKey('User', on_delete=models.CASCADE, null=True, verbose_name='Пользователь')
     is_published = models.BooleanField(verbose_name='Опубликовать', default=False)
 
@@ -121,6 +122,7 @@ class Posts(TimeStampMixin):
     title = models.CharField(max_length=255, verbose_name='Заголовок поста')
     short_content = models.TextField(verbose_name='Краткое описание поста')
     content = models.TextField(verbose_name='Контент поста')
+    css_file = models.FileField(upload_to='css_files/', null=True, blank=True, verbose_name='CSS файл')
     user_id = models.ForeignKey('User', on_delete=models.CASCADE, null=True, verbose_name='Пользователь')
     is_published = models.BooleanField(verbose_name='Опубликовать', default=False)
 
@@ -168,7 +170,7 @@ class Courses(TimeStampMixin):
     image = models.ImageField(upload_to='courses/', verbose_name='Заголовочная кортина')
     short_content = models.TextField(verbose_name='Краткое описание')
     content = models.TextField(verbose_name='Контент')
-    css_file = models.FileField(upload_to='css_files/', verbose_name='CSS файл')
+    css_file = models.FileField(upload_to='css_files/', null=True, blank=True, verbose_name='CSS файл')
     tags = models.ManyToManyField('Tags', verbose_name='Теги')
 
 
@@ -237,6 +239,11 @@ class CoursesRelease(TimeStampMixin):
     is_active = models.BooleanField(verbose_name='Начался ли курс')
     is_published = models.BooleanField('Опубликовать')
     
+    @property
+    def get_course_name(self):
+        if self.course is not None:
+            return self.course.title
+        return None
 
     def __str__(self):
         return f'{self.course}'
@@ -399,3 +406,17 @@ class Comments(TimeStampMixin):
 
     def __str__(self):
         return f'{self.user}'
+
+
+class Questions(TimeStampMixin):
+    class Meta:
+        verbose_name = 'часто задаваемый вопрос'
+        verbose_name_plural = 'часто задаваемые вопросы'
+        ordering = ['-updated_at']
+
+    question = models.CharField(max_length=1000, verbose_name='Вопрос')
+    answer = models.TextField(verbose_name='Ответ (Контетн)')
+    css_file = models.FileField(upload_to='css_files/', null=True, blank=True, verbose_name='CSS файл')
+
+    def __str__(self):
+        return f'{self.question}'

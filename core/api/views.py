@@ -63,7 +63,15 @@ class PagesApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class PagesDetailApiView(RetrieveAPIView):
+class PagesDetailSlugApiView(RetrieveAPIView):
+    queryset = Pages.objects.filter(is_published=True)
+    lookup_field = 'slug'
+    serializer_class = PagesSerializer
+    permission_classes = (AllowAny,)
+
+
+
+class PagesDetailPkApiView(RetrieveAPIView):
     queryset = Pages.objects.filter(is_published=True)
     serializer_class = PagesSerializer
     permission_classes = (AllowAny,)
@@ -239,6 +247,18 @@ class GroupApiView(ListAPIView):
 class GroupDetailApiView(RetrieveAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = (AllowAny,)
+
+
+class QuestionsApiView(ListAPIView):
+    queryset = Questions.objects.all()
+    serializer_class = QuestionsSerializer
+    permission_classes = (AllowAny,)
+
+
+class QuestionsDetailApiView(RetrieveAPIView):
+    queryset = Questions.objects.all()
+    serializer_class = QuestionsSerializer
     permission_classes = (AllowAny,)
 
 
