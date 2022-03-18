@@ -26,6 +26,8 @@ class UsersStatusSerializer(serializers.ModelSerializer):
 class CoursesReleaseSerializer(serializers.ModelSerializer):
     course_name = serializers.ReadOnlyField(source="get_course_name")
     group = serializers.SlugRelatedField(slug_field='title', read_only=True, many=False)
+    type_of_courses = serializers.SlugRelatedField(slug_field='title', read_only=True, many=False)
+
     class Meta:
         model = CoursesRelease
         fields = (

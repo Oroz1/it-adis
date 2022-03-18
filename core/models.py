@@ -259,7 +259,7 @@ class CourseRegistrations(TimeStampMixin):
     full_name = models.CharField(max_length=255, verbose_name='Имя и фамилия')
     phone_number = models.CharField(max_length=15, verbose_name='Номер телефона')
     email = models.EmailField(verbose_name='Почта')
-    personal_info = models.TextField(verbose_name='Допалнительная информация')
+    personal_info = models.TextField(verbose_name='Допалнительная информация', blank=True, null=True)
     course = models.ForeignKey('Courses', on_delete=models.PROTECT, null=True, verbose_name='Курс')
     course_time = models.ForeignKey('ShiftsDays', on_delete=models.PROTECT, null=True, verbose_name='Время курса')
     def __str__(self):

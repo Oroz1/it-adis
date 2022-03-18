@@ -68,4 +68,7 @@ urlpatterns = [
 
     path('questions/', QuestionsApiView.as_view()),
     path('questions/<int:pk>/', QuestionsDetailApiView.as_view()),
+
+    path('mentors/', TeacherApiView.as_view()),
+    path('mentors/<int:pk>/', TeacherDetailApiView.as_view()),
 ]

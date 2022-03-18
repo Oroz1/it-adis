@@ -57,6 +57,19 @@ class UserDetailApiView(RetrieveAPIView):
     permission_classes = (AllowAny,)
 
 
+
+class TeacherApiView(ListAPIView):
+    queryset = User.objects.filter(status__slug='mentor')
+    serializer_class = UserSerializer
+    permission_classes = (AllowAny,)
+
+
+class TeacherDetailApiView(RetrieveAPIView): 
+    queryset = User.objects.filter(status__slug='mentor')
+    serializer_class = UserSerializer
+    permission_classes = (AllowAny,)
+
+
 class PagesApiView(ListAPIView):
     queryset = Pages.objects.filter(is_published=True)
     serializer_class = PagesSerializer
