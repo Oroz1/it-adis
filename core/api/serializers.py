@@ -32,6 +32,7 @@ class CoursesReleaseSerializer(serializers.ModelSerializer):
             'image',
             'release_date',
             'length_of_education',
+            'sescription',
             'level',
             'type_of_courses',
             'is_active',
