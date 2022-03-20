@@ -274,6 +274,17 @@ class QuestionsDetailApiView(RetrieveAPIView):
     serializer_class = QuestionsSerializer
     permission_classes = (AllowAny,)
 
+class AttributesApiView(ListAPIView):
+    queryset = Attributes.objects.all()
+    serializer_class = AttributesSerializer
+    permission_classes = (AllowAny,)
+
+
+class AttributesDetailApiView(RetrieveAPIView):
+    queryset = Attributes.objects.all()
+    serializer_class = AttributesSerializer
+    permission_classes = (AllowAny,)
+
 
 
 

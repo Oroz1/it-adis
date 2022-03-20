@@ -1,8 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
+from rest_framework import serializers
 
 
+#__models___
 class TimeStampMixin(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавление') 
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
@@ -220,35 +222,6 @@ class TypeOfCourses(TimeStampMixin):
         return f'{self.title}'
 
 
-class CoursesRelease(TimeStampMixin):
-
-    class Meta:
-        verbose_name = 'Релиз курса'
-        verbose_name_plural = 'Релизы курсов'
-        ordering = ['-updated_at']
-
-    slug = models.SlugField(verbose_name='Slug название') 
-    course = models.ForeignKey('Courses', on_delete=models.CASCADE, verbose_name='Курс')
-    image = models.ImageField(upload_to='courses_release/', null=True, verbose_name='Заголовочная кортина')
-    group = models.ForeignKey('Group', on_delete=models.PROTECT, verbose_name='Называния группы')
-    description = models.TextField(verbose_name='Описание', null=True)
-    release_date = models.DateTimeField(verbose_name='Дата началы курса')
-    length_of_education = models.CharField(max_length=50, verbose_name='Длительность обучение')
-    level = models.CharField(max_length=50, verbose_name='Уровень курса')
-    type_of_courses = models.ForeignKey('TypeOfCourses', on_delete=models.PROTECT, verbose_name='Формат обучение')
-    is_active = models.BooleanField(verbose_name='Начался ли курс')
-    is_published = models.BooleanField('Опубликовать')
-    
-    @property
-    def get_course_name(self):
-        if self.course is not None:
-            return self.course.title
-        return None
-
-    def __str__(self):
-        return f'{self.course}'
-
-
 class CourseRegistrations(TimeStampMixin):
 
     class Meta:
@@ -394,7 +367,6 @@ class Comments(TimeStampMixin):
     @property
     def get_user_name(self):
         if self.user is not None:
-            print(self.user)
             return self.user.name
         return self.user.name
     
@@ -420,3 +392,63 @@ class Questions(TimeStampMixin):
 
     def __str__(self):
         return f'{self.question}'
+
+
+class Attributes(TimeStampMixin):
+
+    class Meta:
+        verbose_name = 'атрибут'
+        verbose_name_plural = 'атрибуты'
+        ordering = ['-updated_at']
+
+    title = models.CharField(max_length=255, verbose_name='название')
+    value = models.CharField(max_length=255, verbose_name='значение')
+
+    def __str__(self):
+        return f'{self.title}'
+
+
+
+class AttributsModelSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Attributes
+        fields = '__all__' 
+
+
+class CoursesRelease(TimeStampMixin):
+    
+    class Meta:
+        verbose_name = 'Релиз курса'
+        verbose_name_plural = 'Релизы курсов'
+        ordering = ['-updated_at']
+
+    slug = models.SlugField(verbose_name='Slug название') 
+    course = models.ForeignKey('Courses', on_delete=models.CASCADE, verbose_name='Курс')
+    course_name = models.CharField(max_length=455, verbose_name='Название релиза')
+    image = models.ImageField(upload_to='courses_rel/', verbose_name='Картина')
+    group = models.ForeignKey('Group', on_delete=models.PROTECT, verbose_name='Называния группы')
+    description = models.TextField(verbose_name='Описание')
+    release_date = models.DateTimeField(verbose_name='Дата началы курса')
+    attributes = models.ManyToManyField('Attributes', blank=True, verbose_name='атрибуты')
+    length_of_education = models.CharField(max_length=50, verbose_name='Длительность обучение')
+    level = models.CharField(max_length=50, verbose_name='Уровень курса')
+    type_of_courses = models.ForeignKey('TypeOfCourses', on_delete=models.PROTECT, verbose_name='Формат обучение')
+    is_active = models.BooleanField(verbose_name='Начался ли курс')
+    is_published = models.BooleanField('Опубликовать')
+    
+    @property
+    def get_course_name(self):
+        if self.course is not None:
+            return self.course.title
+        return None
+
+    @property
+    def get_attributes(self):
+        if self.attributes is not None:
+    
+            return AttributsModelSerializer(self.attributes.all(), many=True).data
+        return self.attributes
+
+    def __str__(self):
+        return f'{self.course}'

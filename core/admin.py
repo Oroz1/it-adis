@@ -34,7 +34,7 @@ class UserAdminConfig(UserAdmin):
     )
     add_fieldsets = (
         (None, {
-            'fields': ('username', 'name', 'email', 'phone_number', 'status', 'information', 'profession', 'password1', 'password2', 'is_superuser',)}
+            'fields': ('username', 'name', 'email', 'phone_number', 'status', 'information', 'profession', 'password1', 'password2', 'is_superuser', 'is_active')}
          ),
     )
     readonly_fields = ('created_at', 'updated_at')
@@ -172,12 +172,14 @@ class CoursesReleasesAdmin(admin.ModelAdmin):
         'group',
         'release_date',
         'course',
+        'course_name',
         'image',
         'get_image',
         'description',
         'length_of_education',
         'level',
         'type_of_courses',
+        'attributes',
         'is_active',
         'is_published', 
         'created_at', 
@@ -318,5 +320,13 @@ class QuestionsAdmin(admin.ModelAdmin):
     list_display = ('id', 'question',)
     list_display_links = ('id', 'question',)
     search_fields = ('id', 'question',)
+    readonly_fields = ('created_at', 'updated_at',)
+
+
+@admin.register(Attributes)
+class AttributesAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'value',)
+    list_display_links = ('id', 'title',)
+    search_fields = ('id', 'title', 'value')
     readonly_fields = ('created_at', 'updated_at',)
 # Register your models here.

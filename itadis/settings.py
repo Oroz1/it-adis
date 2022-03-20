@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_swagger',
     'django_cleanup',
-    
+    'core.api',
 ]
 
 MIDDLEWARE = [
@@ -361,6 +361,7 @@ JAZZMIN_SETTINGS = {
         "core.ShiftsDays",
         "core.Tags",
         "core.Comments",
+        "core.Attributes",
         "core.Questions",
         ],
 
@@ -402,6 +403,7 @@ JAZZMIN_SETTINGS = {
         "core.TypeOfCourses": "fas fa-puzzle-piece",
         "core.Group": "fas fa-users",
         "core.Questions": "fas fa-question",
+        "core.Attributes": "fas fa-cubes",
     },
     "custom_css": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css",
     # Значки, которые используются, если они не указаны вручную

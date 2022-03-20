@@ -20,19 +20,20 @@ class UsersStatusSerializer(serializers.ModelSerializer):
 
 
 class CoursesReleaseSerializer(serializers.ModelSerializer):
-    course_name = serializers.ReadOnlyField(source="get_course_name")
     group = serializers.SlugRelatedField(slug_field='title', read_only=True, many=False)
     type_of_courses = serializers.SlugRelatedField(slug_field='title', read_only=True, many=False)
+    attributes = serializers.ReadOnlyField(source="get_attributes")
 
     class Meta:
         model = CoursesRelease
         fields = (
             'slug',
             'group',
+            'attributes',
             'image',
             'release_date',
             'length_of_education',
-            'sescription',
+            'description',
             'level',
             'type_of_courses',
             'is_active',
@@ -207,6 +208,13 @@ class QuestionsSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Questions
+        fields = '__all__'
+
+
+class AttributesSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Attributes
         fields = '__all__'
 
     
