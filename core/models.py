@@ -75,6 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampMixin):
         verbose_name_plural = 'Пользователи'
         ordering = ['-updated_at']
 
+    avatar = models.ImageField(upload_to='avatars/', verbose_name='аватарка', null=True, blank=True)
     username = models.CharField(max_length=150, unique=True, verbose_name='Имя пользователя')
     name = models.CharField(max_length=150, blank=True, verbose_name='Полная имя')
     email = models.EmailField(verbose_name='Элетронная почта')
@@ -177,7 +178,7 @@ class Courses(TimeStampMixin):
     def get_info(self):
         if self.id is not None:
             temp = CoursesRelease.objects.filter(course__id=self.id)
-            serializer = CoursesReleaseSerializer(temp, many=True)
+            serializer = CoursesReleaseModelSerializer(temp, many=True)
             return serializer.data
         return None  
 
@@ -461,7 +462,7 @@ class CoursesRelease(TimeStampMixin):
         return f'{self.course}'
 
     
-class CoursesReleaseSerializer(serializers.ModelSerializer):
+class CoursesReleaseModelSerializer(serializers.ModelSerializer):
     type_of_courses = serializers.SlugRelatedField(slug_field='title', read_only=True, many=False)
 
     class Meta:

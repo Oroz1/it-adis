@@ -1,6 +1,3 @@
-from dataclasses import fields
-from email import message
-from re import search
 from django.contrib import admin
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
@@ -26,18 +23,18 @@ class UserAdminConfig(UserAdmin):
     model = User
     search_fields = ('id', 'username', 'name', 'phone_number', 'email')
     ordering = ('-created_at',)
-    list_display = ('id', 'username', 'name', 'get_professions', 'phone_number', 'email', 'is_active',)
+    list_display = ('id', 'username', 'get_avatar', 'name', 'get_professions', 'phone_number', 'email', 'is_active',)
     list_display_links = ('id', 'name', 'username',)
     fieldsets = (
-        (None, {'fields': ('username', 'name', 'email', 'information', 'profession', 'phone_number', 'is_active', 'status', 'is_superuser', 'password', 'created_at', 'updated_at',)},
+        (None, {'fields': ('avatar', 'get_avatar', 'username', 'name', 'email', 'information', 'profession', 'phone_number', 'is_active', 'status', 'is_superuser', 'password', 'created_at', 'updated_at',)},
          ),
     )
     add_fieldsets = (
         (None, {
-            'fields': ('username', 'name', 'email', 'phone_number', 'status', 'information', 'profession', 'password1', 'password2', 'is_superuser', 'is_active')}
+            'fields': ('avatar', 'username', 'name', 'email', 'phone_number', 'status', 'information', 'profession', 'password1', 'password2', 'is_superuser', 'is_active')}
          ),
     )
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at', 'get_avatar',)
 
     def get_professions(self, obj):
         temp = ''
@@ -45,6 +42,13 @@ class UserAdminConfig(UserAdmin):
             temp += f'{profession.title}, '
         return temp
 
+    def get_avatar(self, obj):
+        try:
+            return mark_safe(f'<img src="{obj.avatar.url}" width="50rem">')
+        except Exception:
+            return None
+
+    get_avatar.short_description = 'Аватарка'
     get_professions.short_description = 'Профессии'
 
 

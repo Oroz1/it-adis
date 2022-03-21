@@ -286,7 +286,7 @@ JAZZMIN_SETTINGS = {
     "site_logo": os.path.join(BASE_DIR, 'static', 'images', 'logo.png'),
 
     # Классы CSS, которые применяются к логотипу выше
-    "site_logo_classes": " ",
+    "site_logo_classes": "",
 
     # Относительный путь к значку для вашего сайта, по умолчанию будет site_logo, если он отсутствует (в идеале 32x32 px)
     "site_icon": os.path.join(BASE_DIR, 'static', 'images', 'logo32.png'),
@@ -301,7 +301,7 @@ JAZZMIN_SETTINGS = {
     "search_model": "core.User",
 
     # Имя поля в модели пользователя, которое содержит аватар ImageField/URLField/Charfield или вызываемый объект, который получает пользователя
-    "user_avatar": None,
+    "user_avatar": '',
 
     ############
     # Top Menu #
@@ -316,8 +316,6 @@ JAZZMIN_SETTINGS = {
         # внешний URL, который открывается в новом окне (можно добавить разрешения)
         #{"name": "Jazzmin", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
         {"name": "Rest API", "url": "/api/swagger/", "new_window": False},
-        # администратор модели для связи с (разрешения проверены для модели)
-        {"model": "core.User"},
 
         #Приложение с выпадающим меню для всех страниц своих моделей (разрешения проверены для моделей)
         #{"app": "books"},
@@ -329,8 +327,6 @@ JAZZMIN_SETTINGS = {
 
     # Дополнительные ссылки для включения в меню пользователя в правом верхнем углу (URL-адрес типа "приложение" не разрешен)
     "usermenu_links": [
-        {"name": "Jazzmin", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
-        {"model": "core.User"}
     ],
 
     #############
@@ -405,7 +401,6 @@ JAZZMIN_SETTINGS = {
         "core.Questions": "fas fa-question",
         "core.Attributes": "fas fa-cubes",
     },
-    "custom_css": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css",
     # Значки, которые используются, если они не указаны вручную
     "default_icon_parents": "fas fa-chevron-circle-right",
     "default_icon_children": "fas fa-circle",
@@ -463,7 +458,7 @@ JAZZMIN_UI_TWEAKS = {
     "theme": "default",
     "dark_mode_theme": None,
     "button_classes": {
-        "primary": "btn-outline-primary",
+        "primary": "btn-primary",
         "secondary": "btn-outline-secondary",
         "info": "btn-info",
         "warning": "btn-warning",

@@ -15,7 +15,6 @@ try{
 catch(e){}
 
 try{
-    console.log(footer[0].children[0].children[0]);
     footer[0].children[0].innerHTML = '<b>+996 558 120 012  ITADIS</b>';
 }
 catch(e){}
