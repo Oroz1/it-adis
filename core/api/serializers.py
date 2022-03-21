@@ -2,6 +2,7 @@ from rest_framework import serializers
 from core.models import *
 
 class CoursesSerializer(serializers.ModelSerializer):
+    special_info = serializers.ReadOnlyField(source='get_info')
     tags = serializers.SlugRelatedField(
         many=True,
         read_only=True,
@@ -9,7 +10,17 @@ class CoursesSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Courses
-        fields = '__all__'
+        fields = (
+            'id',
+            'slug',
+            'title',
+            'image',
+            'short_content',
+            'content',
+            'css_file',
+            'tags',
+            'special_info',
+        )
 
 
 class UsersStatusSerializer(serializers.ModelSerializer):

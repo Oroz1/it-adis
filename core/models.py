@@ -173,6 +173,13 @@ class Courses(TimeStampMixin):
     css_file = models.FileField(upload_to='css_files/', null=True, blank=True, verbose_name='CSS файл')
     tags = models.ManyToManyField('Tags', verbose_name='Теги')
 
+    @property
+    def get_info(self):
+        if self.id is not None:
+            temp = CoursesRelease.objects.filter(course__id=self.id)
+            serializer = CoursesReleaseSerializer(temp, many=True)
+            return serializer.data
+        return None  
 
     def __str__(self):
         return self.title
@@ -452,3 +459,16 @@ class CoursesRelease(TimeStampMixin):
 
     def __str__(self):
         return f'{self.course}'
+
+    
+class CoursesReleaseSerializer(serializers.ModelSerializer):
+    type_of_courses = serializers.SlugRelatedField(slug_field='title', read_only=True, many=False)
+
+    class Meta:
+        model = CoursesRelease
+        fields = (
+            'release_date',
+            'length_of_education',
+            'level',
+            'type_of_courses',
+         )

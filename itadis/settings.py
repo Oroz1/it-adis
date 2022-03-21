@@ -280,7 +280,7 @@ JAZZMIN_SETTINGS = {
     "site_header": "Itadis.kg",
 
     #Название бренда (максимум 19 символов) (по умолчанию — current_admin_site.site_header, если оно отсутствует или отсутствует)
-    "site_brand": " ",
+    "site_brand": "ITADIS",
 
     # Логотип для вашего сайта должен присутствовать в статических файлах, используется для бренда в левом верхнем углу.
     "site_logo": os.path.join(BASE_DIR, 'static', 'images', 'logo.png'),
@@ -421,9 +421,9 @@ JAZZMIN_SETTINGS = {
     #############
     # Относительные пути к пользовательским скриптам CSS/JS (должны присутствовать в статических файлах)
     "custom_css": None,
-    "custom_js": None,
+    "custom_js": 'js/script.js',
     # Показывать ли настройщик пользовательского интерфейса на боковой панели
-    "show_ui_builder": False,
+    "show_ui_builder": True,
 
     ###############
     # Сменить вид #
@@ -445,15 +445,15 @@ JAZZMIN_UI_TWEAKS = {
     "footer_small_text": False,
     "body_small_text": False,
     "brand_small_text": False,
-    "brand_colour": False,
+    "brand_colour": "navbar-dark",
     "accent": "accent-primary",
-    "navbar": "navbar-white navbar-light",
+    "navbar": "navbar-dark",
     "no_navbar_border": False,
     "navbar_fixed": True,
     "layout_boxed": False,
     "footer_fixed": False,
     "sidebar_fixed": True,
-    "sidebar": "sidebar-dark-primary",
+    "sidebar": "sidebar-dark-danger",
     "sidebar_nav_small_text": True,
     "sidebar_disable_expand": False,
     "sidebar_nav_child_indent": False,
@@ -463,13 +463,11 @@ JAZZMIN_UI_TWEAKS = {
     "theme": "default",
     "dark_mode_theme": None,
     "button_classes": {
-        "primary": "btn-primary",
-        "secondary": "btn-secondary",
+        "primary": "btn-outline-primary",
+        "secondary": "btn-outline-secondary",
         "info": "btn-info",
         "warning": "btn-warning",
         "danger": "btn-danger",
         "success": "btn-success"
     }
 }
-
-JAZZMIN_SETTINGS["show_ui_builder"] = True
